@@ -1,6 +1,6 @@
 $delay: 0.3s;
 
-@keyframes contexify_flipInX {
+@keyframes react-contexify__flipInX {
   from {
     transform: perspective(800px) rotate3d(1, 0, 0, 45deg);
   }
@@ -10,7 +10,7 @@ $delay: 0.3s;
   }
 }
 
-@keyframes contexify_flipOutX {
+@keyframes react-contexify__flipOutX {
   from {
     transform: perspective(800px);
   }
@@ -21,14 +21,27 @@ $delay: 0.3s;
   }
 }
 
-.contexify_willEnter-flip {
+.react-contexify__will-enter--flip {
   backface-visibility: visible !important;
   transform-origin: top center;
-  animation: contexify_flipInX $delay;
+  animation: react-contexify__flipInX $delay;
 }
 
-.contexify_willLeave-flip {
+.react-contexify__will-leave--flip {
   transform-origin: top center;
-  animation: contexify_flipOutX $delay;
+  animation: react-contexify__flipOutX $delay;
   backface-visibility: visible !important;
+}
+
+@keyframes swing-in-top-fwd {
+  0% {
+    transform: rotateX(-100deg);
+    transform-origin: top;
+    opacity: 0;
+  }
+  100% {
+    transform: rotateX(0deg);
+    transform-origin: top;
+    opacity: 1;
+  }
 }

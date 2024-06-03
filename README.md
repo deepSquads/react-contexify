@@ -8,22 +8,6 @@
 
 </div>
 
-## Features
-
-- Easy to set up for real, you can make it work in less than 10sec!
-- Super easy to customize thanks to css variables 💅
-- Custom position
-- Sub menu support
-- Does not go offscreen
-- Dark mode 🌒
-- Keyboard navigation + keyboard shortcut!
-- Built-in animations
-- Easy to test!
-- Written in Typescript 💪
-- Tiny! (3k gzipped)
-
-Check the documentation for more!
-
 
 ## Documentation
 
@@ -46,8 +30,9 @@ $ npm install --save react-contexify
 ## The gist
 
 ```js
-import { Menu, Item, Separator, Submenu, useContextMenu } from 'react-contexify';
-import 'react-contexify/ReactContexify.css';
+import React from 'react';
+import { Menu, Item, Separator, Submenu, MenuProvider, useContextMenu } from 'react-contexify';
+import 'react-contexify/dist/ReactContexify.css';
 
 const MENU_ID = 'blahblah';
 
@@ -57,40 +42,27 @@ function App() {
   });
 
   function handleContextMenu(event){
-      show({
-        event,
+      event.preventDefault();
+      show(event, {
         props: {
             key: 'value'
         }
       })
   }
-
-  // I'm using a single event handler for all items
-  // but you don't have too :)
-  const handleItemClick = ({ id, event, props }) => {
-    switch (id) {
-      case "copy":
-        console.log(event, props)
-        break;
-      case "cut";
-        console.log(event, props);
-        break;
-      //etc...
-    }
-  }
+  const handleItemClick = ({ event, props }) => console.log(event,props);
 
   return (
     <div>
     <p onContextMenu={handleContextMenu}>lorem ipsum blabladhasi blaghs blah</p>  
     <Menu id={MENU_ID}>
-      <Item id="copy" onClick={handleItemClick}>Copy</Item>
-      <Item id="cut" onClick={handleItemClick}>Cut</Item>
+      <Item onClick={handleItemClick}>Item 1</Item>
+      <Item onClick={handleItemClick}>Item 2</Item>
       <Separator />
       <Item disabled>Disabled</Item>
       <Separator />
       <Submenu label="Foobar">
-        <Item id="reload" onClick={handleItemClick}>Reload</Item>
-        <Item id="something" onClick={handleItemClick}>Do something else</Item>
+        <Item onClick={handleItemClick}>Sub Item 1</Item>
+        <Item onClick={handleItemClick}>Sub Item 2</Item>
       </Submenu>
     </Menu>
     </div>

@@ -1,36 +1,24 @@
-import { contextMenu, ShowContextMenuParams } from '../core';
-import { MenuId } from '../types';
+import { contextMenu } from '../core';
+import { ContextMenuParams, TriggerEvent } from '../types';
 
-export interface UseContextMenuParams<TProps = unknown> {
-  id: MenuId;
-  props?: TProps;
-}
+export type UseContextMenuProps = Partial<
+  Pick<ContextMenuParams, 'id' | 'props'>
+>;
 
-type MakeOptional<Type, Key extends keyof Type> = Omit<Type, Key> &
-  Partial<Pick<Type, Key>>;
-
-export function useContextMenu<TProps>(
-  params: UseContextMenuParams<TProps>
-): {
-  show: (params: MakeOptional<ShowContextMenuParams, 'id'>) => void;
-  hideAll: () => void;
-};
-
-export function useContextMenu<TProps>(
-  params?: Partial<UseContextMenuParams<TProps>>
-): {
-  show: (params: ShowContextMenuParams) => void;
-  hideAll: () => void;
-};
-
-export function useContextMenu(
-  props?: UseContextMenuParams | Partial<UseContextMenuParams>
-) {
+export function useContextMenu(props?: UseContextMenuProps) {
   return {
-    show(params: ShowContextMenuParams) {
+    show(event: TriggerEvent, params?: Omit<ContextMenuParams, 'event'>) {
+      if (process.env.NODE_ENV === 'development') {
+        if (!props?.id && !params?.id)
+          console.error(
+            "You need to provide an id when initializing the hook `useContextMenu({ id: 'your id' })` or when you display the menu `show(e, { id: 'your id' })`. The later is used to override the one defined during initialization."
+          );
+      }
       contextMenu.show({
-        ...props,
-        ...params,
+        id: (params?.id || props?.id) as string,
+        props: params?.props || props?.props,
+        event: event,
+        position: params?.position,
       });
     },
     hideAll() {

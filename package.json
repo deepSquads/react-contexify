@@ -1,44 +1,33 @@
 {
-  "version": "6.0.0",
+  "version": "5.0.2",
   "license": "MIT",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./scss/": "./scss/",
-    "./inject-style": {
-      "types": "./dist/inject-style.d.ts",
-      "require": "./dist/inject-style.js",
-      "import": "./dist/inject-style.esm.mjs"
-    },
-    "./dist/ReactContexify.css": "./dist/ReactContexify.min.css",
-    "./dist/ReactContexify.css.map": "./dist/ReactContexify.css.map",
-    "./ReactContexify.css": "./dist/ReactContexify.min.css",
-    "./ReactContexify.css.map": "./dist/ReactContexify.css.map"
-  },
+  "typings": "dist/index.d.ts",
   "files": [
     "dist",
+    "src",
     "scss"
   ],
+  "engines": {
+    "node": ">=10"
+  },
   "scripts": {
-    "start": "cd example && yarn start",
-    "build": "tsup && yarn run build:style",
+    "start": "tsdx watch",
+    "start:example": "cd example && yarn start",
+    "build": "yarn run prepare",
     "test": "cypress run",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build && yarn run style",
     "cypress:open": "cypress open",
     "sass": "sass scss/main.scss dist/ReactContexify.css",
     "postsass": "postcss dist/ReactContexify.css --use autoprefixer -m -o dist/ReactContexify.css",
-    "build:style": "yarn run sass && cssnano dist/ReactContexify.css dist/ReactContexify.min.css --no-zindex --no-reduceIdents && yarn run style2js",
-    "style2js": "style2js --out-dir dist dist/ReactContexify.min.css"
+    "style": "yarn run sass && cssnano dist/ReactContexify.css dist/ReactContexify.min.css --no-zindex --no-reduceIdents && yarn run gen-style-injector",
+    "gen-style-injector": "node scripts/style-injector.js"
   },
-  "peerDependencies": {
-    "react": ">=16",
-    "react-dom": ">=16"
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
   },
   "prettier": {
     "printWidth": 80,
@@ -46,7 +35,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "react-contexify",
+  "name": "@deepsquads/react-contexify",
   "author": "Fadi Khadra <fdkhadra@gmail.com> (https://github.com/fkhadra)",
   "repository": {
     "type": "git",
@@ -65,22 +54,24 @@
     "react-contexify",
     "popup"
   ],
+  "module": "dist/react-contexify.esm.js",
   "devDependencies": {
-    "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.0.8",
-    "cssnano": "^5.1.14",
+    "@types/react": "^16.9.56",
+    "@types/react-dom": "^16.9.9",
+    "cssnano": "^4.1.10",
     "cssnano-cli": "^1.0.5",
-    "cypress": "^11.0.1",
-    "postcss": "^8.4.18",
-    "postcss-cli": "^10.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "sass": "^1.56.1",
-    "style2js": "^1.0.1",
-    "tsup": "^6.4.0",
-    "typescript": "^4.8.4"
+    "cypress": "^5.3.0",
+    "husky": "^4.3.0",
+    "postcss": "^8.1.4",
+    "postcss-cli": "^8.1.0",
+    "react": "npm:@preact/compat@0.0.3",
+    "react-dom": "npm:@preact/compat@0.0.3",
+    "sass": "^1.26.12",
+    "tsdx": "^0.14.0",
+    "tslib": "^2.0.1",
+    "typescript": "^4.0.3"
   },
   "dependencies": {
-    "clsx": "^1.2.1"
+    "clsx": "^1.1.1"
   }
 }

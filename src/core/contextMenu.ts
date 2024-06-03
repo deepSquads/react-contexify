@@ -4,23 +4,23 @@ import { SyntheticEvent } from 'react';
 
 import { EVENT } from '../constants';
 
-export interface ContextMenu {
-  show: <TProps>(params: ShowContextMenuParams<TProps>) => void;
-  hideAll: () => void;
-}
-
-export interface ShowContextMenuParams<TProps = unknown> {
+export interface ShowContextMenuParams {
   id: MenuId;
   event: TriggerEvent;
-  props?: TProps;
+  props?: any;
   position?: {
     x: number;
     y: number;
   } | null;
 }
 
+export interface ContextMenu {
+  show: (params: ShowContextMenuParams) => void;
+  hideAll: () => void;
+}
+
 const contextMenu: ContextMenu = {
-  show({ event, id, props, position }) {
+  show({ id, event, props, position }) {
     if (event.preventDefault) event.preventDefault();
 
     eventManager.emit(EVENT.HIDE_ALL).emit(id, {
